@@ -1,0 +1,15 @@
+:root {
+  font-family: 'Montserrat', sans-serif;
+}
+*{
+
+  margin: 0;
+  padding: 0;
+}
+.container{
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1450px;
+}
