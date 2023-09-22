@@ -7,6 +7,7 @@ import BeerCard from "../components/BeerCard";
 import { HomeStyles } from "../styles/HomeStyle";
 import Loader from "../components/loyout/Loader";
 import { useSearchParams } from "react-router-dom";
+import BackToTop from "../components/BackToTop";
 
 export default function Home() {
   const [beers, setBeers] = useState([]);
@@ -184,7 +185,7 @@ export default function Home() {
             </div>
           )}
         </div>
-
+        <BackToTop />
         {loading === true && <Loader />}
       </Loyout>
     </HomeStyles>
