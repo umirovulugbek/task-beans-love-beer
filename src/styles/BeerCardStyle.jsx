@@ -1,9 +1,6 @@
 import styled from "styled-components";
 
 export const BeerCardStyles = styled.div`
-  /* display: flex; */
-  width: 350px;
-  height: 220px;
   padding: 20px;
   background-color: #fff;
   border-radius: 7px;

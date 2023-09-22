@@ -10,12 +10,14 @@ import { useSearchParams } from "react-router-dom";
 
 export default function Home() {
   const [beers, setBeers] = useState([]);
+  const [basket, setBasket] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState(
     searchParams.get("beer_name") ? searchParams.get("beer_name") : ""
   );
+
   useEffect(() => {
     getBeers();
     // getSearch()
@@ -23,8 +25,9 @@ export default function Home() {
     if (!beers?.length || search === "") {
       setPage(1);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, searchParams, search]);
+  }, [page, searchParams, search, basket]);
 
   const getBeers = () => {
     // setLoading(true)
@@ -52,6 +55,38 @@ export default function Home() {
       .finally(() => {
         setLoading(false);
       });
+  };
+  const addFavourites = (items) => {
+    let sbaskets = localStorage.getItem("sbaskets");
+    sbaskets = JSON.parse(sbaskets?.length ? sbaskets : "[]");
+
+    if (
+      sbaskets
+        ?.map(({ id }) => {
+          return id;
+        })
+        .includes(items?.id)
+    ) {
+      const b = sbaskets;
+      let l = [];
+      b.forEach((obj) => {
+        if (obj?.id !== items?.id) {
+          l.push(obj);
+        }
+      });
+
+      sbaskets = l;
+      localStorage.setItem("sbaskets", JSON.stringify(sbaskets));
+      setBasket(l);
+    } else {
+      sbaskets = [...sbaskets, items];
+      localStorage.setItem("sbaskets", JSON.stringify(sbaskets));
+      setBasket(sbaskets);
+    }
+
+    {
+      console.log(sbaskets, "s");
+    }
   };
 
   // const getSearch = () =>{
@@ -123,15 +158,20 @@ export default function Home() {
           search={search}
           handleSearch={handleSearch}
         />
-        {console.log(search, "s")}
 
         <div className={beers?.length > 0 ? "beersC" : ""}>
           {beers?.length > 0 ? (
-            beers?.map((items) => (
-              <div key={items?.id}>
-                <BeerCard items={items} />
-              </div>
-            ))
+            beers?.map((items) => {
+              return (
+                <>
+                  <BeerCard
+                    addFavourites={addFavourites}
+                    // sbaskets={sbaskets}
+                    items={items}
+                  />
+                </>
+              );
+            })
           ) : (
             <div
               style={{
